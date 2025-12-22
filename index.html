@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Syntrix Studio — Waitlist</title>
+    <meta
+      name="description"
+      content="Syntrix Studio is building the home of AI-native entertainment. Join the waitlist for early access."
+    />
+    <meta name="theme-color" content="#05060F" />
+    <style>
+      :root{
+        --bg:#05060F;
+        --panel:#0D0F1A;
+        --panel2:#0A0B18;
+        --text:#FFFFFF;
+        --muted:#B0B4C2;
+        --line:rgba(255,255,255,.08);
+        --glass:rgba(13,15,26,.72);
+        --shadow: 0 18px 60px rgba(0,0,0,.55);
+        --radius: 18px;
+      }
+
+      *{box-sizing:border-box}
+      html,body{height:100%}
+      body{
+        margin:0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+        background:
+          radial-gradient(900px 500px at 10% 10%, rgba(255,0,127,.10), transparent 60%),
+          radial-gradient(800px 480px at 80% 15%, rgba(11,114,255,.12), transparent 58%),
+          radial-gradient(900px 520px at 60% 90%, rgba(108,0,255,.10), transparent 60%),
+          linear-gradient(180deg, var(--bg), #03040A);
+        color:var(--text);
+        letter-spacing: .1px;
+      }
+
+      a{color:inherit; text-decoration:none}
+      .container{max-width:1100px; margin:0 auto; padding:0 22px}
+      .nav{
+        position:sticky; top:0; z-index:50;
+        backdrop-filter: blur(10px);
+        background: linear-gradient(180deg, rgba(5,6,15,.78), rgba(5,6,15,.35));
+        border-bottom:1px solid var(--line);
+      }
+      .nav-inner{
+        height:64px; display:flex; align-items:center; justify-content:space-between; gap:14px;
+      }
+      .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.4px}
+      .glyph{
+        width:30px; height:30px; border-radius:10px;
+        background: linear-gradient(135deg, #FF007F 0%, #0B72FF 50%, #6C00FF 100%);
+        box-shadow: 0 12px 36px rgba(108,0,255,.18);
+        position:relative;
+      }
+      .glyph:after{
+        content:"";
+        position:absolute; inset:2px;
+        border-radius:8px;
+        background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.30), transparent 55%);
+        opacity:.9;
+      }
+      .nav-links{display:none; gap:18px; color:rgba(255,255,255,.78); font-weight:550}
+      .nav-links a{padding:10px 8px; border-radius:12px}
+      .nav-links a:hover{background:rgba(255,255,255,.04)}
+      .nav-cta{display:flex; align-items:center; gap:10px}
+      .btn{
+        height:42px; padding:0 16px;
+        border-radius:14px;
+        display:inline-flex; align-items:center; justify-content:center;
+        border:1px solid rgba(255,255,255,.12);
+        background: rgba(255,255,255,.03);
+        color:var(--text);
+        font-weight:650;
+        cursor:pointer;
+        transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      }
+      .btn:hover{background:rgba(255,255,255,.05)}
+      .btn:active{transform:scale(.98)}
+      .btn-primary{
+        border:none;
+        background: linear-gradient(90deg, #FF007F 0%, #0B72FF 50%, #6C00FF 100%);
+        box-shadow: 0 16px 46px rgba(11,114,255,.20);
+      }
+
+      header.hero{padding:70px 0 22px}
+      .hero-grid{
+        display:grid;
+        grid-template-columns: 1fr;
+        gap:18px;
+        align-items:stretch;
+      }
+      .kicker{
+        display:inline-flex; align-items:center; gap:10px;
+        color:rgba(255,255,255,.72);
+        font-weight:650; font-size:12px;
+        letter-spacing:.22em;
+        text-transform:uppercase;
+      }
+      .dot{
+        width:8px; height:8px; border-radius:99px;
+        background: rgba(255,255,255,.55);
+        box-shadow: 0 0 0 6px rgba(255,255,255,.06);
+      }
+      h1{
+        margin:12px 0 10px;
+        font-size: clamp(34px, 5vw, 62px);
+        line-height: 1.02;
+        letter-spacing: -.02em;
+      }
+      .subhead{
+        margin:0;
+        color: rgba(255,255,255,.74);
+        font-size: clamp(15px, 2.2vw, 18px);
+        line-height: 1.6;
+        max-width: 62ch;
+      }
+
+      .panel{
+        background: linear-gradient(180deg, rgba(13,15,26,.78), rgba(13,15,26,.58));
+        border:1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .hero-card{padding:22px}
+      .form-row{display:flex; flex-direction:column; gap:12px; margin-top:16px}
+      .input{
+        height:48px;
+        border-radius:14px;
+        border:1px solid rgba(255,255,255,.12);
+        background: rgba(0,0,0,.22);
+        color:var(--text);
+        padding:0 14px;
+        outline:none;
+        font-size:15px;
+      }
+      .input:focus{border-color: rgba(11,114,255,.55); box-shadow: 0 0 0 4px rgba(11,114,255,.18)}
+      .helper{
+        margin-top:10px;
+        font-size:12.5px;
+        color: rgba(255,255,255,.62);
+      }
+      .micro{
+        font-size:12px;
+        color: rgba(255,255,255,.54);
+      }
+      .actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:14px}
+
+      section{padding:28px 0}
+      .section-title{
+        font-size: 20px;
+        margin:0 0 10px;
+        letter-spacing:-.01em;
+      }
+      .section-desc{margin:0; color: rgba(255,255,255,.70); line-height:1.65}
+
+      .cards{
+        margin-top:16px;
+        display:grid;
+        grid-template-columns: 1fr;
+        gap:12px;
+      }
+      .card{padding:16px; border-radius:16px; border:1px solid var(--line); background: rgba(255,255,255,.03)}
+      .card h3{margin:0 0 6px; font-size:15px}
+      .card p{margin:0; color: rgba(255,255,255,.68); line-height:1.6; font-size:13.5px}
+
+      .split{
+        display:grid;
+        grid-template-columns: 1fr;
+        gap:12px;
+        margin-top:16px;
+      }
+
+      .steps{
+        margin-top:14px;
+        display:grid;
+        grid-template-columns: 1fr;
+        gap:12px;
+      }
+      .step{
+        padding:16px; border-radius:16px; border:1px solid var(--line);
+        background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      }
+      .step .n{
+        display:inline-flex; align-items:center; justify-content:center;
+        width:26px; height:26px; border-radius:10px;
+        background: rgba(255,255,255,.06);
+        border:1px solid rgba(255,255,255,.10);
+        font-weight:750;
+        margin-bottom:8px;
+      }
+      .step h3{margin:0 0 6px; font-size:15px}
+      .step p{margin:0; color: rgba(255,255,255,.68); line-height:1.6; font-size:13.5px}
+
+      .waitlist-block{
+        padding:22px;
+        display:grid;
+        gap:10px;
+      }
+      .radio-row{
+        display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;
+      }
+      .pill{
+        display:inline-flex; align-items:center; gap:8px;
+        padding:10px 12px;
+        border-radius:999px;
+        border:1px solid rgba(255,255,255,.12);
+        background: rgba(0,0,0,.18);
+        cursor:pointer;
+        user-select:none;
+      }
+      .pill input{accent-color:#0B72FF}
+      .pill span{color:rgba(255,255,255,.78); font-size:13.5px; font-weight:650}
+
+      .faq{margin-top:12px}
+      details{
+        border:1px solid var(--line);
+        background: rgba(255,255,255,.03);
+        border-radius:16px;
+        padding:14px 14px;
+        margin-bottom:10px;
+      }
+      summary{
+        cursor:pointer;
+        font-weight:700;
+        color: rgba(255,255,255,.86);
+        list-style:none;
+      }
+      summary::-webkit-details-marker{display:none}
+      details p{
+        margin:10px 0 0;
+        color: rgba(255,255,255,.68);
+        line-height:1.65;
+        font-size:13.5px;
+      }
+
+      footer{
+        padding:28px 0 50px;
+        color: rgba(255,255,255,.55);
+        border-top:1px solid var(--line);
+        margin-top:22px;
+      }
+      .footer-row{display:flex; flex-direction:column; gap:12px; align-items:flex-start; justify-content:space-between}
+      .footer-links{display:flex; gap:14px; flex-wrap:wrap}
+      .footer-links a:hover{text-decoration:underline}
+
+      .toast{
+        position:fixed; left:50%; bottom:22px; transform:translateX(-50%);
+        background: rgba(13,15,26,.86);
+        border:1px solid rgba(255,255,255,.12);
+        border-radius: 14px;
+        padding: 12px 14px;
+        box-shadow: var(--shadow);
+        color: rgba(255,255,255,.86);
+        width:min(520px, calc(100% - 28px));
+        display:none;
+        backdrop-filter: blur(10px);
+      }
+
+      @media (min-width: 820px){
+        .nav-links{display:flex}
+        .hero-grid{
+          grid-template-columns: 1.1fr .9fr;
+          gap:18px;
+        }
+        .cards{grid-template-columns: repeat(3, 1fr)}
+        .split{grid-template-columns: repeat(2, 1fr)}
+        .steps{grid-template-columns: repeat(3, 1fr)}
+        .footer-row{flex-direction:row; align-items:center}
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- NAV -->
+    <div class="nav">
+      <div class="container">
+        <div class="nav-inner">
+          <a class="brand" href="#top" aria-label="Syntrix Studio Home">
+            <div class="glyph" aria-hidden="true"></div>
+            <div>Syntrix Studio</div>
+          </a>
+
+          <nav class="nav-links" aria-label="Primary">
+            <a href="#aiverse">AIVerse</a>
+            <a href="#explain">Explain</a>
+            <a href="#creators">For Creators</a>
+            <a href="#faq">FAQ</a>
+          </nav>
+
+          <div class="nav-cta">
+            <a class="btn" href="#waitlist">Join Waitlist</a>
+            <a class="btn btn-primary" href="#waitlist">Get Early Access</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO -->
+    <header id="top" class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <div class="kicker"><span class="dot"></span> AI ENTERTAINMENT PLATFORM</div>
+            <h1>The Studio for AI-Generated Worlds.</h1>
+            <p class="subhead">
+              Syntrix Studio is building the home of AI-native series, shorts, and cinematic universes—
+              where creators publish, grow, and earn.
+            </p>
+
+            <div class="actions">
+              <a class="btn btn-primary" href="#waitlist">Join the Waitlist</a>
+              <a class="btn" href="#creators">Get Creator Access</a>
+            </div>
+
+            <p class="helper">Launching soon. Early members get first access to AIVerse drops + creator tools.</p>
+          </div>
+
+          <div class="panel hero-card" id="waitlist">
+            <div class="kicker"><span class="dot"></span> EARLY ACCESS</div>
+            <h2 class="section-title" style="margin-top:10px;">Join the waitlist</h2>
+            <p class="section-desc">No spam. Early access invites only.</p>
+
+            <!-- FORM:
+                 For now this is a placeholder. When you're ready, replace data-endpoint with your real endpoint:
+                 - Cloudflare Worker URL
+                 - ConvertKit form endpoint
+                 - Mailchimp endpoint
+            -->
+            <form id="waitlistForm" class="form-row" data-endpoint="">
+              <label>
+                <span class="micro">Email</span><br />
+                <input class="input" type="email" name="email" placeholder="you@domain.com" required />
+              </label>
+
+              <div>
+                <div class="micro" style="margin-bottom:8px;">I’m joining as</div>
+                <div class="radio-row" role="radiogroup" aria-label="Joining as">
+                  <label class="pill"><input type="radio" name="role" value="Viewer" checked /><span>Viewer</span></label>
+                  <label class="pill"><input type="radio" name="role" value="Creator" /><span>Creator</span></label>
+                  <label class="pill"><input type="radio" name="role" value="Both" /><span>Both</span></label>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" type="submit" style="height:48px;border-radius:14px;">
+                Notify Me
+              </button>
+
+              <div class="micro">
+                By joining, you agree to receive launch updates. You can unsubscribe anytime.
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- SECTION: WHAT IS -->
+    <section id="explain">
+      <div class="container">
+        <h2 class="section-title">A new home for AI-native entertainment.</h2>
+        <p class="section-desc">
+          Syntrix Studio is where AI-generated content becomes a real catalog—organized into evolving universes,
+          powered by creator tools, and built for monetization from day one.
+        </p>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Watch</h3>
+            <p>A vertical, cinematic feed built for AI episodes and shorts.</p>
+          </div>
+          <div class="card">
+            <h3>Create</h3>
+            <p>Upload, publish, and manage characters like IP assets.</p>
+          </div>
+          <div class="card">
+            <h3>Earn</h3>
+            <p>Track performance, unlock monetization, and grow your audience.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: AIVERSE -->
+    <section id="aiverse">
+      <div class="container">
+        <h2 class="section-title">Enter AIVerse.</h2>
+        <p class="section-desc">
+          AIVerse is the universe layer inside Syntrix Studio—collections of worlds with recurring characters,
+          story arcs, and creator collaborations.
+        </p>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Universes</h3>
+            <p>Explore worlds with evolving lore and curated series.</p>
+          </div>
+          <div class="card">
+            <h3>Characters</h3>
+            <p>Build iconic characters and track appearances across episodes.</p>
+          </div>
+          <div class="card">
+            <h3>Originals</h3>
+            <p>Flagship universes that define the Syntrix Studio catalog.</p>
+          </div>
+        </div>
+
+        <div class="actions" style="margin-top:14px">
+          <a class="btn btn-primary" href="#waitlist">Get Early AIVerse Access</a>
+          <a class="btn" href="#faq">Read FAQ</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: VIEWERS VS CREATORS -->
+    <section id="creators">
+      <div class="container">
+        <h2 class="section-title">Built for both sides of the screen.</h2>
+        <div class="split">
+          <div class="card">
+            <h3>For Viewers</h3>
+            <p>Discover universe-first storytelling. Save episodes, follow creators, and enter worlds—instantly.</p>
+          </div>
+          <div class="card">
+            <h3>For Creators</h3>
+            <p>Upload flow with AI attribution. Character Studio. Creator Hub with analytics + earnings.</p>
+          </div>
+        </div>
+
+        <div class="actions" style="margin-top:14px">
+          <a class="btn btn-primary" href="#waitlist">Join the Waitlist →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: HOW IT WORKS -->
+    <section>
+      <div class="container">
+        <h2 class="section-title">How Syntrix Studio works</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="n">1</div>
+            <h3>Join</h3>
+            <p>Get early access invites and first-look universe drops.</p>
+          </div>
+          <div class="step">
+            <div class="n">2</div>
+            <h3>Explore</h3>
+            <p>Watch the feed or enter AIVerse to binge entire worlds.</p>
+          </div>
+          <div class="step">
+            <div class="n">3</div>
+            <h3>Create & earn</h3>
+            <p>Creators publish episodes, build characters, and track performance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: WAITLIST (SECOND CAPTURE) -->
+    <section>
+      <div class="container">
+        <div class="panel waitlist-block">
+          <h2 class="section-title" style="margin:0;">Be first inside Syntrix Studio.</h2>
+          <p class="section-desc" style="margin:0;">
+            Early access is limited. Join now to secure your spot.
+          </p>
+          <div class="actions" style="margin-top:10px;">
+            <a class="btn btn-primary" href="#waitlist">Join Waitlist</a>
+            <a class="btn" href="#top">Back to top</a>
+          </div>
+          <p class="micro" style="margin:0;">We’ll only email when your invite is ready.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="container">
+        <h2 class="section-title">FAQ</h2>
+
+        <div class="faq">
+          <details>
+            <summary>When does Syntrix Studio launch?</summary>
+            <p>We’re rolling out private access in waves. Waitlist members get invites first.</p>
+          </details>
+
+          <details>
+            <summary>Is all content AI-generated?</summary>
+            <p>Syntrix Studio is optimized for AI-native creation. We’ll label content clearly and require creator disclosures for trust.</p>
+          </details>
+
+          <details>
+            <summary>What is AIVerse exactly?</summary>
+            <p>AIVerse is the universe hub—worlds, series, and characters grouped into a browsable catalog.</p>
+          </details>
+
+          <details>
+            <summary>Will creators be able to monetize?</summary>
+            <p>Yes. The Creator Hub is built with earnings + analytics in mind. Early creators will get priority access to monetization features.</p>
+          </details>
+
+          <details>
+            <summary>Can I join as both viewer and creator?</summary>
+            <p>Yes. Select “Both” on the waitlist and we’ll route you accordingly.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="footer-row">
+          <div>© <span id="year"></span> Syntrix Studio. All rights reserved.</div>
+          <div class="footer-links">
+            <a href="#" aria-label="Terms (placeholder)">Terms</a>
+            <a href="#" aria-label="Privacy (placeholder)">Privacy</a>
+            <a href="mailto:hello@syntrixstudio.com">Contact</a>
+          </div>
+        </div>
+        <div class="micro" style="margin-top:10px;">
+          Syntrix Studio is in active development.
+        </div>
+      </div>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      // Minimal UX: show a confirmation without needing a backend yet.
+      // When you're ready, set form data-endpoint="" to a real endpoint and POST JSON there.
+      const form = document.getElementById("waitlistForm");
+      const toast = document.getElementById("toast");
+      const year = document.getElementById("year");
+      year.textContent = new Date().getFullYear();
+
+      function showToast(msg){
+        toast.textContent = msg;
+        toast.style.display = "block";
+        setTimeout(() => toast.style.display = "none", 3500);
+      }
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = form.email.value.trim();
+        const role = (new FormData(form).get("role") || "Viewer").toString();
+        const endpoint = form.getAttribute("data-endpoint");
+
+        if (!email) return;
+
+        // Store locally so it feels real even before backend is connected
+        try {
+          const existing = JSON.parse(localStorage.getItem("syntrix_waitlist") || "[]");
+          existing.push({ email, role, ts: new Date().toISOString() });
+          localStorage.setItem("syntrix_waitlist", JSON.stringify(existing));
+        } catch {}
+
+        // If you add a backend later, this will send it.
+        if (endpoint) {
+          try {
+            await fetch(endpoint, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, role, source: "syntrixstudio.com" })
+            });
+          } catch {
+            // swallow; still show toast
+          }
+        }
+
+        form.reset();
+        // restore default checked
+        const radios = form.querySelectorAll('input[type="radio"][name="role"]');
+        if (radios[0]) radios[0].checked = true;
+
+        showToast("You’re on the waitlist. Invite waves are coming soon.");
+      });
+    </script>
+  </body>
+</html>
