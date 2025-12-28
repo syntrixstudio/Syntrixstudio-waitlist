@@ -578,6 +578,144 @@
 
         showToast("You’re on the waitlist. Invite waves are coming soon.");
       });
-    </script>
+      <script>
+  // 1. Select the form elements
+  const form = document.querySelector('form');
+  const WORKER_URL = "https://synthrixstudio-waitlist-api.syntrixstudio-com.workers.dev";
+
+  // 2. Listen for the submit event
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Stop the page from reloading
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerText;
+
+    // Change button text to show it's working
+    submitBtn.innerText = "Joining...";
+    submitBtn.disabled = true;
+
+    try {
+      // 3. Get the data from your inputs
+      const emailInput = form.querySelector('input[type="email"]');
+      const email = emailInput.value;
+
+      // Find which radio button is checked (Viewer/Creator/Both)
+      // We look for any checked input, or default to 'viewer' if none found
+      const checkedRadio = form.querySelector('input[type="radio"]:checked');
+      const role = checkedRadio ? checkedRadio.value : "viewer";
+
+      // 4. Send data to your Cloudflare Worker
+      const response = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, role: role })
+      });
+
+      if (response.ok) {
+        // === SUCCESS! ===
+        // This is your existing logic to reset the UI
+        form.reset();
+
+        // Restore default radio selection (first one)
+        const radios = form.querySelectorAll('input[type="radio"]');
+        if (radios[0]) radios[0].checked = true;
+
+        // Show your success message
+        if (typeof showToast === 'function') {
+            showToast("You're on the waitlist. Invite coming soon!");
+        } else {
+            alert("You're on the waitlist! 🚀");
+        }
+
+      } else {
+        // Server returned an error
+        console.error("Server Error");
+        alert("Something went wrong. Please try again.");
+      }
+
+    } catch (error) {
+      // Network error
+      console.error("Network Error:", error);
+      alert("Failed to connect. Please check your internet.");
+
+    } finally {
+      // Reset button text
+      submitBtn.innerText = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+
+  // Keep your showToast function definition if it was here, 
+  // otherwise ensure it is loaded from your other JS files.
+<script>
+  // 1. Select the form elements
+  const form = document.querySelector('form');
+  const WORKER_URL = "https://synthrixstudio-waitlist-api.syntrixstudio-com.workers.dev";
+
+  // 2. Listen for the submit event
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Stop the page from reloading
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerText;
+
+    // Change button text to show it's working
+    submitBtn.innerText = "Joining...";
+    submitBtn.disabled = true;
+
+    try {
+      // 3. Get the data from your inputs
+      const emailInput = form.querySelector('input[type="email"]');
+      const email = emailInput.value;
+
+      // Find which radio button is checked (Viewer/Creator/Both)
+      // We look for any checked input, or default to 'viewer' if none found
+      const checkedRadio = form.querySelector('input[type="radio"]:checked');
+      const role = checkedRadio ? checkedRadio.value : "viewer";
+
+      // 4. Send data to your Cloudflare Worker
+      const response = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, role: role })
+      });
+
+      if (response.ok) {
+        // === SUCCESS! ===
+        // This is your existing logic to reset the UI
+        form.reset();
+
+        // Restore default radio selection (first one)
+        const radios = form.querySelectorAll('input[type="radio"]');
+        if (radios[0]) radios[0].checked = true;
+
+        // Show your success message
+        if (typeof showToast === 'function') {
+            showToast("You're on the waitlist. Invite coming soon!");
+        } else {
+            alert("You're on the waitlist! 🚀");
+        }
+
+      } else {
+        // Server returned an error
+        console.error("Server Error");
+        alert("Something went wrong. Please try again.");
+      }
+
+    } catch (error) {
+      // Network error
+      console.error("Network Error:", error);
+      alert("Failed to connect. Please check your internet.");
+
+    } finally {
+      // Reset button text
+      submitBtn.innerText = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+
+  // Keep your showToast function definition if it was here, 
+  // otherwise ensure it is loaded from your other JS files.
+</script>
   </body>
 </html>
