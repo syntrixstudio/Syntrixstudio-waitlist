@@ -717,5 +717,55 @@
   // Keep your showToast function definition if it was here, 
   // otherwise ensure it is loaded from your other JS files.
 </script>
+    <script>
+(() => {
+  const API = "https://syntrixstudio-waitlist-api.syntrixstudio-com.workers.dev/";
+
+  // Try to locate form + email input
+  const form =
+    document.querySelector('form') ||
+    document.querySelector('[data-waitlist-form]');
+
+  const emailInput =
+    document.querySelector('input[type="email"]') ||
+    document.querySelector('input[name="email"]') ||
+    document.querySelector('#email');
+
+  if (!form || !emailInput) {
+    console.log("[waitlist] form/email input not found");
+    return;
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = (emailInput.value || "").trim();
+    if (!email) return alert("Enter an email.");
+
+    try {
+      const res = await fetch(API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, role: "viewer" })
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        console.log("[waitlist] API error", res.status, data);
+        return alert("Signup failed. Try again.");
+      }
+
+      console.log("[waitlist] OK", data);
+      alert("You're on the waitlist ✅");
+      form.reset();
+    } catch (err) {
+      console.log("[waitlist] network error", err);
+      alert("Network error. Try again.");
+    }
+  });
+})();
+</script>
+
   </body>
 </html>
