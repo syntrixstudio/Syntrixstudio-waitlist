@@ -80,5 +80,59 @@
             }
         });
     </script>
+    <script>
+  // This is the bridge between your design and the database
+  const API_URL = "https://synthrixstudio-waitlist-api.syntrixstudio-com.workers.dev";
+  
+  // 1. Find your original form and button
+  const form = document.querySelector('form');
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Don't refresh the page
+
+    // UI: Show the user something is happening
+    const originalText = submitBtn.innerText;
+    submitBtn.innerText = "Joining...";
+    submitBtn.disabled = true;
+
+    // 2. Collect the data from your original inputs
+    const emailInput = form.querySelector('input[type="email"]');
+    // This finds whichever radio button or select option is picked
+    const roleInput = form.querySelector('input[name="role"]:checked') || form.querySelector('select');
+    
+    const data = {
+      email: emailInput.value.trim(),
+      role: roleInput ? roleInput.value : "viewer"
+    };
+
+    try {
+      // 3. Send the data to your Cloudflare Worker
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        // SUCCESS: Run your original success logic (toast/message)
+        form.reset();
+        if (typeof showToast === 'function') {
+            showToast("You're on the list! 🚀");
+        } else {
+            alert("Success! You're on the list.");
+        }
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      alert("Network error. Please check your connection.");
+    } finally {
+      // Reset button
+      submitBtn.innerText = originalText;
+      submitBtn.disabled = false;
+    }
+  });
+</script>
 </body>
 </html>
