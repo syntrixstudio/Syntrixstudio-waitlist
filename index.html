@@ -1,54 +1,314 @@
-<script>
-  // This is the bridge between your design and the database
-  const API_URL = "https://synthrixstudio-waitlist-api.syntrixstudio-com.workers.dev";
-  
-  // 1. Find your original form and button
-  const form = document.querySelector('form');
-  const submitBtn = form.querySelector('button[type="submit"]');
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SyntaxStudio — AI Entertainment</title>
+  <meta name="description" content="SyntaxStudio is an AI entertainment studio for generating, remixing, and publishing cinematic content." />
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault(); // Don't refresh the page
-
-    // UI: Show the user something is happening
-    const originalText = submitBtn.innerText;
-    submitBtn.innerText = "Joining...";
-    submitBtn.disabled = true;
-
-    // 2. Collect the data from your original inputs
-    const emailInput = form.querySelector('input[type="email"]');
-    // This finds whichever radio button or select option is picked
-    const roleInput = form.querySelector('input[name="role"]:checked') || form.querySelector('select');
-    
-    const data = {
-      email: emailInput.value.trim(),
-      role: roleInput ? roleInput.value : "viewer"
-    };
-
-    try {
-      // 3. Send the data to your Cloudflare Worker
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-
-      if (response.ok) {
-        // SUCCESS: Run your original success logic (toast/message)
-        form.reset();
-        if (typeof showToast === 'function') {
-            showToast("You're on the list! 🚀");
-        } else {
-            alert("Success! You're on the list.");
-        }
-      } else {
-        alert("Something went wrong. Please try again.");
-      }
-    } catch (err) {
-      alert("Network error. Please check your connection.");
-    } finally {
-      // Reset button
-      submitBtn.innerText = originalText;
-      submitBtn.disabled = false;
+  <style>
+    :root{
+      --bg:#070814;
+      --card:#0c1024;
+      --text:#e9e9ff;
+      --muted:#a9acc7;
+      --line:rgba(255,255,255,.10);
+      --accent:#7c5cff;
+      --accent2:#33d6ff;
+      --good:#3ddc97;
+      --bad:#ff4d6d;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 16px;
     }
-  });
-</script>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: radial-gradient(1200px 700px at 20% 0%, rgba(124,92,255,.25), transparent 60%),
+                  radial-gradient(1000px 600px at 80% 20%, rgba(51,214,255,.18), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+    }
+    a{color:inherit}
+    .wrap{max-width:1080px;margin:0 auto;padding:28px 18px 80px}
+    header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .logo{
+      display:flex;align-items:center;gap:10px;
+      font-weight:800;letter-spacing:.3px
+    }
+    .badge{
+      font-size:12px;
+      padding:6px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      color:var(--muted);
+      background: rgba(255,255,255,.03);
+    }
+    .hero{
+      margin-top:42px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:22px;
+      align-items:start;
+    }
+    @media (max-width: 900px){
+      .hero{grid-template-columns:1fr}
+    }
+    .h1{
+      font-size:54px;
+      line-height:1.02;
+      margin:0 0 12px;
+      letter-spacing:-1px;
+    }
+    @media (max-width: 520px){
+      .h1{font-size:40px}
+    }
+    .sub{
+      font-size:18px;
+      color:var(--muted);
+      line-height:1.55;
+      margin:0 0 18px;
+      max-width: 62ch;
+    }
+    .ctaRow{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:12px 16px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      text-decoration:none;
+      color:var(--text);
+      cursor:pointer;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.06)}
+    .btnPrimary{
+      border-color: rgba(124,92,255,.55);
+      background: linear-gradient(135deg, rgba(124,92,255,.85), rgba(51,214,255,.55));
+      color:#06101c;
+      font-weight:800;
+    }
+    .btnPrimary:hover{border-color: rgba(124,92,255,.8)}
+    .grid{
+      margin-top:22px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+    }
+    .card{
+      background: rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding:16px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .card h3{margin:0 0 8px;font-size:16px}
+    .card p{margin:0;color:var(--muted);line-height:1.55;font-size:14px}
+
+    /* Form card */
+    .formCard{position:sticky; top:18px}
+    @media (max-width: 900px){ .formCard{position:static} }
+
+    .formTitle{margin:0 0 6px;font-size:18px}
+    .formHelp{margin:0 0 14px;color:var(--muted);font-size:14px;line-height:1.5}
+    label{display:block;font-size:12px;color:var(--muted);margin:10px 0 6px}
+    input, select{
+      width:100%;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.25);
+      color: var(--text);
+      outline:none;
+    }
+    input:focus, select:focus{
+      border-color: rgba(124,92,255,.65);
+      box-shadow: 0 0 0 4px rgba(124,92,255,.12);
+    }
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width: 520px){.row{grid-template-columns:1fr}}
+    .small{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.45}
+    .status{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      display:none;
+      font-size:13px;
+      line-height:1.4;
+    }
+    .status.ok{display:block;border-color: rgba(61,220,151,.35)}
+    .status.err{display:block;border-color: rgba(255,77,109,.35)}
+    footer{margin-top:60px;color:var(--muted);font-size:13px}
+    .sep{height:1px;background:var(--line);margin:18px 0}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">
+        <span style="display:inline-flex;width:12px;height:12px;border-radius:50%;
+          background:linear-gradient(135deg,var(--accent),var(--accent2));"></span>
+        <span>SyntaxStudio</span>
+        <span class="badge">AI Entertainment</span>
+      </div>
+      <a class="btn" href="#waitlist">Join waitlist</a>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h1 class="h1">AI entertainment that feels cinematic.</h1>
+        <p class="sub">
+          SyntaxStudio is an AI entertainment studio for generating, remixing, and publishing
+          story-driven content — trailers, shorts, voice scenes, and visuals — built for creators
+          and audiences.
+        </p>
+
+        <div class="ctaRow">
+          <a class="btn btnPrimary" href="#waitlist">Get early access</a>
+          <a class="btn" href="#what">See what it does</a>
+        </div>
+
+        <div id="what" class="grid">
+          <div class="card">
+            <h3>🎬 Generate</h3>
+            <p>Create scenes, trailers, and shorts with AI workflows designed for entertainment.</p>
+          </div>
+          <div class="card">
+            <h3>🧩 Remix</h3>
+            <p>Turn prompts into variations: alternate cuts, voices, captions, and styles.</p>
+          </div>
+          <div class="card">
+            <h3>🚀 Publish</h3>
+            <p>Export formats optimized for socials — with templates and consistent branding.</p>
+          </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="card">
+          <h3>What you get early</h3>
+          <p>
+            Early testers get access to private builds, new generators first, and creator tools
+            for AI entertainment workflows.
+          </p>
+        </div>
+      </div>
+
+      <div class="card formCard" id="waitlist">
+        <h2 class="formTitle">Join the waitlist</h2>
+        <p class="formHelp">Drop your email. We’ll notify you when early access opens.</p>
+
+        <form id="waitlistForm">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required />
+
+          <div class="row">
+            <div>
+              <label for="role">Role</label>
+              <select id="role" name="role">
+                <option value="viewer">Viewer</option>
+                <option value="creator">Creator</option>
+                <option value="producer">Producer</option>
+                <option value="investor">Investor</option>
+              </select>
+            </div>
+            <div>
+              <label for="country">Country (optional)</label>
+              <input id="country" name="country" type="text" placeholder="USA" />
+            </div>
+          </div>
+
+          <button class="btn btnPrimary" type="submit" style="width:100%;margin-top:14px">
+            Join waitlist
+          </button>
+
+          <div id="statusOk" class="status ok"></div>
+          <div id="statusErr" class="status err"></div>
+
+          <p class="small">
+            By joining, you agree to receive occasional product updates. Unsubscribe anytime.
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <div class="sep"></div>
+      <div>© <span id="y"></span> SyntaxStudio. Built for AI entertainment.</div>
+    </footer>
+  </div>
+
+  <script>
+    // ✅ IMPORTANT: Replace with your Worker/API endpoint
+    // Example: https://your-worker-name.your-subdomain.workers.dev/waitlist
+    const WAITLIST_API_URL = "https://YOUR-WORKER-URL/waitlist";
+
+    const form = document.getElementById("waitlistForm");
+    const okBox = document.getElementById("statusOk");
+    const errBox = document.getElementById("statusErr");
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    function setStatus(ok, msg) {
+      okBox.style.display = "none";
+      errBox.style.display = "none";
+      if (ok) {
+        okBox.textContent = msg;
+        okBox.style.display = "block";
+      } else {
+        errBox.textContent = msg;
+        errBox.style.display = "block";
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const role = document.getElementById("role").value;
+      const country = document.getElementById("country").value.trim();
+
+      if (!email) {
+        setStatus(false, "Please enter your email.");
+        return;
+      }
+
+      // UI: disable button during submit
+      const btn = form.querySelector("button[type='submit']");
+      const prevText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Joining…";
+
+      try {
+        const res = await fetch(WAITLIST_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, role, country }),
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok || !data.ok) {
+          const msg = data.error || `Request failed (${res.status}).`;
+          throw new Error(msg);
+        }
+
+        setStatus(true, "✅ You're on the list. We'll reach out soon!");
+        form.reset();
+      } catch (err) {
+        setStatus(false, "❌ " + (err.message || "Something went wrong."));
+      } finally {
+        btn.disabled = false;
+        btn.textContent = prevText;
+      }
+    });
+  </script>
+</body>
+</html>
