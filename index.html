@@ -39,6 +39,7 @@
       .pill:has(input:checked){background: linear-gradient(90deg, #FF007F, #0B72FF, #6C00FF); border:none;}
       .pill input{display:none;}
       .toast{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background: rgba(13,15,26,.95); border:1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 12px 14px; display:none; backdrop-filter: blur(10px); z-index:100;}
+      footer{padding:20px 0; border-top:1px solid var(--line); margin-top:40px;}
     </style>
   </head>
   <body>
@@ -63,7 +64,7 @@
       </div>
     </header>
     <div id="toast" class="toast"></div>
-    <footer><div class="container">© <span id="year"></span> Syntrix Studio.</div></footer>
+    <footer><div class="container">© <span id="year"></span> Syntrix Studio. All rights reserved.</div></footer>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
@@ -74,7 +75,12 @@
       const toast = document.getElementById("toast");
       document.getElementById("year").textContent = new Date().getFullYear();
 
-      function showToast(msg){ toast.textContent = msg; toast.style.display = "block"; setTimeout(() => toast.style.display = "none", 4000); }
+      function showToast(msg){ 
+        toast.textContent = msg; 
+        toast.style.display = "block"; 
+        toast.style.background = "linear-gradient(90deg, #FF007F, #0B72FF, #6C00FF)";
+        setTimeout(() => toast.style.display = "none", 4000); 
+      }
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -83,14 +89,17 @@
         const role = new FormData(form).get("role");
 
         try {
+          // A: Save to Database
           const res = await fetch(API_URL, {
             method: "POST", headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: email.toLowerCase(), role: role.toLowerCase() })
           });
           if (res.ok) {
-            emailjs.send("service_lt53szi", "template_fzv9aqa", { email: email, role: role });
+            // B: Send Notification
+            emailjs.send("service_4km8x39", "template_fzv9aqa", { email: email, role: role });
             showToast("Success! You're on the list. 🚀");
             form.reset();
+            form.querySelectorAll('input[type="radio"]')[0].checked = true;
           } else { throw new Error(); }
         } catch (err) { showToast("Error connecting. Try again."); }
         finally { submitBtn.innerText = "Notify Me"; submitBtn.disabled = false; }
