@@ -7,127 +7,289 @@
     <meta name="description" content="Syntrix Studio is building the home of AI-native entertainment. Join the waitlist for early access." />
     <meta name="theme-color" content="#05060F" />
     <style>
-      :root{
-        --bg:#05060F; --panel:#0D0F1A; --panel2:#0A0B18; --text:#FFFFFF;
-        --muted:#B0B4C2; --line:rgba(255,255,255,.08); --glass:rgba(13,15,26,.72);
-        --shadow: 0 18px 60px rgba(0,0,0,.55); --radius: 18px;
+      :root {
+        --bg: #05060F;
+        --panel: rgba(13, 15, 26, 0.72);
+        --text: #FFFFFF;
+        --line: rgba(255, 255, 255, 0.08);
+        --accent-gradient: linear-gradient(90deg, #FF007F 0%, #0B72FF 50%, #6C00FF 100%);
       }
-      *{box-sizing:border-box}
-      html,body{height:100%}
-      body{
-        margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-        background: radial-gradient(900px 500px at 10% 10%, rgba(255,0,127,.10), transparent 60%),
-                    radial-gradient(800px 480px at 80% 15%, rgba(11,114,255,.12), transparent 58%),
-                    radial-gradient(900px 520px at 60% 90%, rgba(108,0,255,.10), transparent 60%),
-                    linear-gradient(180deg, var(--bg), #03040A);
-        color:var(--text); letter-spacing: .1px;
+
+      * { box-sizing: border-box; }
+      
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        /* The exact "Original" background gradients */
+        background-image: 
+          radial-gradient(800px 500px at 10% 20%, rgba(255, 0, 127, 0.15), transparent 60%),
+          radial-gradient(600px 600px at 90% 10%, rgba(11, 114, 255, 0.15), transparent 60%),
+          radial-gradient(900px 400px at 50% 90%, rgba(108, 0, 255, 0.15), transparent 60%);
       }
-      .container{max-width:1100px; margin:0 auto; padding:0 22px}
-      .nav{position:sticky; top:0; z-index:50; backdrop-filter: blur(10px); background: rgba(5,6,15,.78); border-bottom:1px solid var(--line);}
-      .nav-inner{height:64px; display:flex; align-items:center; justify-content:space-between;}
-      .brand{display:flex; align-items:center; gap:10px; font-weight:700;}
-      .glyph{width:30px; height:30px; border-radius:10px; background: linear-gradient(135deg, #FF007F, #0B72FF, #6C00FF);}
-      .btn{height:42px; padding:0 16px; border-radius:14px; display:inline-flex; align-items:center; border:1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.03); color:var(--text); cursor:pointer; font-weight:650;}
-      .btn-primary{border:none; background: linear-gradient(90deg, #FF007F, #0B72FF, #6C00FF); box-shadow: 0 16px 46px rgba(11,114,255,.20);}
-      .hero{padding:70px 0 22px}
-      .hero-grid{display:grid; grid-template-columns: 1fr; gap:18px;}
-      @media (min-width: 820px){ .hero-grid{grid-template-columns: 1.1fr .9fr;} }
-      .panel{background: linear-gradient(180deg, rgba(13,15,26,.78), rgba(13,15,26,.58)); border:1px solid var(--line); border-radius: var(--radius); padding:22px;}
-      .input{width:100%; height:48px; border-radius:14px; border:1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.22); color:white; padding:0 14px; outline:none;}
-      .radio-row{display:flex; gap:10px; margin-top:8px;}
-      .pill{flex:1; display:flex; align-items:center; justify-content:center; padding:10px; border-radius:99px; border:1px solid rgba(255,255,255,.12); background: rgba(0,0,0,.18); cursor:pointer; transition: all 0.2s;}
-      .pill:has(input:checked){background: linear-gradient(90deg, #FF007F, #0B72FF, #6C00FF); border:none;}
-      .pill input{display:none;}
-      .toast{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); background: rgba(13,15,26,.95); border:1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 12px 14px; display:none; backdrop-filter: blur(10px); z-index:100;}
-      footer{padding:40px 0 60px; border-top:1px solid var(--line); margin-top:60px;}
-      .footer-row{display:flex; justify-content:space-between; align-items:center;}
+
+      .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+      /* NAVIGATION */
+      .nav {
+        position: sticky; top: 0; z-index: 100;
+        backdrop-filter: blur(12px);
+        background: rgba(5, 6, 15, 0.8);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-inner {
+        height: 70px; display: flex; align-items: center; justify-content: space-between;
+      }
+      .brand { font-weight: 700; font-size: 18px; display: flex; align-items: center; gap: 10px; }
+      .glyph {
+        width: 32px; height: 32px; border-radius: 8px;
+        background: var(--accent-gradient);
+      }
+      .btn-sm {
+        font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 12px;
+        background: rgba(255,255,255,0.1); text-decoration: none; color: white;
+        transition: background 0.2s;
+      }
+
+      /* HERO SECTION */
+      .hero { padding: 80px 0; }
+      .hero-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+      }
+      @media(max-width: 800px) { .hero-grid { grid-template-columns: 1fr; } }
+
+      h1 {
+        font-size: clamp(40px, 5vw, 64px);
+        line-height: 1.1; margin: 0 0 20px 0;
+        letter-spacing: -0.02em;
+      }
+      .subhead {
+        font-size: 18px; line-height: 1.6; color: rgba(255,255,255,0.7);
+        max-width: 480px; margin-bottom: 30px;
+      }
+
+      /* GLASS PANEL FORM */
+      .glass-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        backdrop-filter: blur(20px);
+      }
+
+      .input-group { margin-bottom: 20px; }
+      label { display: block; font-size: 14px; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+      
+      input[type="email"] {
+        width: 100%; padding: 16px; border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(0,0,0,0.3);
+        color: white; font-size: 16px; outline: none;
+        transition: border-color 0.2s;
+      }
+      input[type="email"]:focus { border-color: #0B72FF; }
+
+      /* PILL TOGGLES (The Original Look) */
+      .toggle-container {
+        display: flex; background: rgba(0,0,0,0.3);
+        border-radius: 14px; padding: 4px;
+        border: 1px solid var(--line);
+      }
+      .toggle-option {
+        flex: 1; text-align: center; padding: 10px;
+        border-radius: 10px; cursor: pointer;
+        font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.6);
+        transition: all 0.2s;
+      }
+      .toggle-option:hover { color: white; }
+      
+      /* Hidden Radio Logic */
+      input[type="radio"] { display: none; }
+      input[type="radio"]:checked + div {
+        background: var(--accent-gradient);
+        color: white; font-weight: 600;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      }
+
+      /* MAIN BUTTON */
+      .btn-primary {
+        width: 100%; padding: 16px; border-radius: 14px; border: none;
+        background: var(--accent-gradient);
+        color: white; font-size: 16px; font-weight: 700;
+        cursor: pointer; margin-top: 10px;
+        box-shadow: 0 10px 20px rgba(11, 114, 255, 0.3);
+        transition: transform 0.1s;
+      }
+      .btn-primary:active { transform: scale(0.98); }
+      .btn-primary:disabled { opacity: 0.7; cursor: wait; }
+
+      .micro { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 16px; text-align: center; }
+
+      /* TOAST NOTIFICATION */
+      #toast {
+        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+        background: var(--panel); border: 1px solid rgba(255,255,255,0.1);
+        padding: 12px 24px; border-radius: 50px;
+        display: none; backdrop-filter: blur(10px);
+        font-weight: 600; font-size: 14px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        z-index: 999;
+      }
+
+      footer {
+        margin-top: 80px; padding: 40px 0; border-top: 1px solid var(--line);
+        font-size: 14px; color: rgba(255,255,255,0.4);
+      }
     </style>
   </head>
   <body>
+
     <div class="nav">
       <div class="container">
         <div class="nav-inner">
           <div class="brand"><div class="glyph"></div>Syntrix Studio</div>
-          <a class="btn btn-primary" href="#waitlist">Early Access</a>
+          <a href="#waitlist" class="btn-sm">Early Access</a>
         </div>
       </div>
     </div>
 
-    <header class="hero">
+    <section class="hero">
       <div class="container">
         <div class="hero-grid">
-          <div>
-            <h1 style="font-size:clamp(34px, 5vw, 62px); line-height:1.02;">The Studio for AI-Generated Worlds.</h1>
-            <p style="color:rgba(255,255,255,.74); font-size:18px;">Join the waitlist for early access invites.</p>
+          
+          <div class="hero-text">
+            <h1>The Studio for AI-Generated Worlds.</h1>
+            <p class="subhead">
+              Join the waitlist for early access invites. We're building the home of AI-native entertainment.
+            </p>
           </div>
-          <div class="panel" id="waitlist">
-            <h2 style="margin:0 0 10px; font-size:20px;">Join the waitlist</h2>
+
+          <div class="glass-card" id="waitlist">
+            <h2 style="margin-top:0; font-size:24px;">Join the waitlist</h2>
+            <p style="color:rgba(255,255,255,0.6); margin-bottom:24px;">No spam. Early access invites only.</p>
+
             <form id="waitlistForm">
-              <input class="input" type="email" name="email" placeholder="you@domain.com" required /><br><br>
-              <div class="radio-row">
-                <label class="pill"><input type="radio" name="role" value="Viewer" checked /><span>Viewer</span></label>
-                <label class="pill"><input type="radio" name="role" value="Creator" /><span>Creator</span></label>
-                <label class="pill"><input type="radio" name="role" value="Both" /><span>Both</span></label>
-              </div><br>
-              <button class="btn btn-primary" id="submitBtn" type="submit" style="width:100%; height:48px; border-radius:14px;">Notify Me</button>
+              
+              <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" name="email" placeholder="name@example.com" required />
+              </div>
+
+              <div class="input-group">
+                <label>I'm joining as:</label>
+                <div class="toggle-container">
+                  <label class="toggle-option">
+                    <input type="radio" name="role" value="Viewer" checked>
+                    <div>Viewer</div>
+                  </label>
+                  <label class="toggle-option">
+                    <input type="radio" name="role" value="Creator">
+                    <div>Creator</div>
+                  </label>
+                  <label class="toggle-option">
+                    <input type="radio" name="role" value="Both">
+                    <div>Both</div>
+                  </label>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-primary" id="submitBtn">Notify Me</button>
+              <div class="micro">By joining, you agree to receive launch updates.</div>
             </form>
           </div>
+
         </div>
       </div>
-    </header>
-
-    <div id="toast" class="toast"></div>
+    </section>
 
     <footer>
       <div class="container">
-        <div class="footer-row">
-          <div style="color:rgba(255,255,255,.55);">© <span id="year"></span> Syntrix Studio. All rights reserved.</div>
-          <div style="display:flex; gap:14px; color:rgba(255,255,255,.55);">
-            <a href="#">Terms</a><a href="#">Privacy</a><a href="mailto:hello@syntrixstudio.com">Contact</a>
-          </div>
-        </div>
+        © <span id="year"></span> Syntrix Studio. All rights reserved.
       </div>
     </footer>
 
+    <div id="toast"></div>
+
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <script>
-      (function(){ emailjs.init("DkW2YKp0OpiTw060H"); })();
+      // 1. Initialize EmailJS with your Public Key
+      (function() {
+          emailjs.init("DkW2YKp0OpiTw060H"); // Verified Public Key
+      })();
+
       const API_URL = "https://synthrixstudio-waitlist-api.syntrixstudio-com.workers.dev";
       const form = document.getElementById("waitlistForm");
       const submitBtn = document.getElementById("submitBtn");
       const toast = document.getElementById("toast");
       document.getElementById("year").textContent = new Date().getFullYear();
 
-      function showToast(msg){ 
-        toast.textContent = msg; 
-        toast.style.display = "block"; 
-        toast.style.background = "linear-gradient(90deg, #FF007F, #0B72FF, #6C00FF)";
-        toast.style.color = "white";
-        setTimeout(() => toast.style.display = "none", 4000); 
+      // Toast Function
+      function showToast(msg, isError = false) {
+        toast.innerText = msg;
+        toast.style.display = "block";
+        toast.style.color = isError ? "#ff6b6b" : "#4ade80"; // Red for error, Green for success
+        // Original Gradient for success background
+        if (!isError) {
+          toast.style.background = "linear-gradient(90deg, #FF007F 0%, #0B72FF 100%)";
+          toast.style.color = "white";
+        } else {
+          toast.style.background = "rgba(13, 15, 26, 0.9)";
+        }
+        
+        setTimeout(() => {
+          toast.style.display = "none";
+        }, 4000);
       }
 
+      // Submit Logic
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        submitBtn.innerText = "Joining..."; submitBtn.disabled = true;
+
+        // UI Loading
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = "Joining...";
+        submitBtn.disabled = true;
+
         const email = form.email.value.trim();
         const role = new FormData(form).get("role");
 
         try {
-          // A: Save to Cloudflare Database
-          const res = await fetch(API_URL, {
-            method: "POST", headers: { "Content-Type": "application/json" },
+          // A. Save to Cloudflare Database
+          const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email: email.toLowerCase(), role: role.toLowerCase() })
           });
-          
-          if (res.ok) {
-            // B: Send Notification via EmailJS
-            emailjs.send("service_4km8x39", "template_fzv9aqa", { email: email, role: role });
-            showToast("Success! You're on the list. 🚀");
+
+          if (response.ok) {
+            // B. Send Welcome Email via EmailJS
+            // Using your Verified Service ID & Template ID
+            await emailjs.send("service_4km8x39", "template_fzv9aqa", {
+              email: email,
+              role: role
+            });
+
+            // Success UI
+            showToast("You're on the list! 🚀");
             form.reset();
-            form.querySelectorAll('input[type="radio"]')[0].checked = true;
-          } else { throw new Error(); }
-        } catch (err) { showToast("Error connecting. Try again."); }
-        finally { submitBtn.innerText = "Notify Me"; submitBtn.disabled = false; }
+            // Reset radio to Viewer
+            const radios = form.querySelectorAll('input[type="radio"]');
+            if(radios[0]) radios[0].checked = true;
+          } else {
+            throw new Error("Server error");
+          }
+
+        } catch (error) {
+          console.error(error);
+          showToast("Network error. Please try again.", true);
+        } finally {
+          submitBtn.innerText = originalText;
+          submitBtn.disabled = false;
+        }
       });
     </script>
   </body>
